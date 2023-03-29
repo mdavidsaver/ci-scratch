@@ -1,0 +1,27 @@
+name: scratch
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - os: ubuntu-latest
+          python: 3.9
+        - os: windows-latest
+          python: 3.9
+        - os: macos-latest
+          python: 3.9
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup native python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run
+        run: python pyfileno.py
